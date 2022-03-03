@@ -6,6 +6,7 @@ from typing import Union
 
 
 class RunningMeanStd(object):
+
     def __init__(self, epsilon=1e-4, shape=()):
         """
         calulates the running mean and std of a data stream
@@ -67,6 +68,10 @@ class MlpNetwork(nn.Module):
 
 
 class RND(nn.Module):
+    """
+    implementation of Random Network Distillation
+    https://arxiv.org/abs/1810.12894
+    """
     def __init__(self, x_dim=1, embedding_dim=32):
         self.use_cuda = torch.cuda.is_available()
         # gpu = 1

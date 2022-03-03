@@ -8,6 +8,7 @@ class GridMDP:
     """
     Grid world MDP
     """
+
     def __init__(self):
         self.x_dim = 10
         self.y_dim = 10
@@ -32,7 +33,7 @@ class GridMDP:
         :return:
         """
         # dist = np.exp(self._rewards * weight)
-        dist = (self._rewards) * weight
+        dist = self._rewards * weight
         dist /= np.sum(dist)
         return dist
 
@@ -106,6 +107,7 @@ class MazeWorld(GridMDP):
     Maze World is the same grid world as above
     But it has multiple goals, one of which is unreachable
     """
+
     def __init__(self):
         super(MazeWorld, self).__init__()
         self.start_state = np.asarray([1, 1])
@@ -209,11 +211,13 @@ class ToroidWorld(GridMDP):
     Except the grid bends in on itself
     so walking off one side causes transitions to the other side
     """
+
     def __init__(self):
         super(ToroidWorld, self).__init__()
         self.start_state = np.asarray([2, 2])
         self._state = self.start_state
-        self.target_state = [np.asarray([self.x_dim - 3, self.y_dim - 3])]  # , np.asarray([8, 1]), np.asarray([6, 6]), np.asarray([4, 9])]
+        self.target_state = [np.asarray(
+            [self.x_dim - 3, self.y_dim - 3])]  # , np.asarray([8, 1]), np.asarray([6, 6]), np.asarray([4, 9])]
         self.time_limit = 40
         self._rewards = np.zeros(shape=(self.x_dim, self.y_dim), dtype=np.float)
         for c, t in enumerate(self.target_state):
@@ -250,12 +254,14 @@ class ToroidWorld(GridMDP):
         self.done()
         return self._state, self.reward(), self._done, {}
 
+
 class WindyMazeWorld(MazeWorld):
     """
     Windy maze world is same as Maze world
     Except in part of the world there is a wind
     that causes stochastic transitions for certain actions
     """
+
     def __init__(self):
         super(WindyMazeWorld, self).__init__()
 

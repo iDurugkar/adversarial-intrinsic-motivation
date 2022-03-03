@@ -4,7 +4,7 @@ GAIL file
 import numpy as np
 import torch
 from torch import nn
-from torch.nn import utils
+# from torch.nn import utils
 import torch.nn.functional as f
 import random
 from policy import MlpNetwork, SoftQLearning
@@ -16,14 +16,13 @@ import argparse
 import os
 from os import path
 
-
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--seed', help='random seed', type=int, default=1123)
 parser.add_argument('--rnd', help='random network distillation', type=bool, default=False)
 parser.add_argument('--reward', help="reward function to use ['gail', 'airl', 'fairl', 'aim', 'none']", type=str,
                     default='aim')
 parser.add_argument('--dir', help="directory to save results in", type=str,
-                    default='aim_summer')
+                    default='aim_results')
 args = parser.parse_args()
 torch.set_default_dtype(torch.float32)
 # Set random seeds
@@ -32,8 +31,9 @@ print(args.seed)
 torch.manual_seed(seed)
 random.seed = seed
 np.random.seed = seed
-reward_to_use = args.reward  #  use one of ['gail', 'airl', 'fairl', 'none']
+reward_to_use = args.reward  # use one of ['gail', 'airl', 'fairl', 'none']
 print(reward_to_use)
+
 
 def wasserstein_reward(d):
     """
@@ -79,6 +79,9 @@ reward_dict = {'gail': gail_reward, 'airl': airl_reward, 'fairl': fairl_reward, 
 
 
 class Discriminator(nn.Module):
+    """
+    The discriminator used to learn the potentials or the reward functions
+    """
     def __init__(self, x_dim=1, max_state=10., min_state=0):
         super(Discriminator, self).__init__()
         self.mean_state = torch.tensor((max_state - min_state) / 2 + min_state, dtype=torch.float32)
@@ -123,6 +126,7 @@ class GAIL:
     """
     Class to take the continuous MDP and use gail to match given target distribution
     """
+
     def __init__(self):
         self.env = MazeWorld()
         # self.env = ToroidWorld()
@@ -142,7 +146,6 @@ class GAIL:
             self.rnd = None
         self.max_r = 0.
         self.min_r = -1.
-
 
     def gather_data(self, num_trans=100) -> None:
         """
@@ -246,9 +249,9 @@ class GAIL:
     #     return
 
     def compute_aim_pen(self,
-                          target_state: torch.Tensor,
-                          prev_state: torch.Tensor,
-                          next_state_state: torch.Tensor, lambda_=10.):
+                        target_state: torch.Tensor,
+                        prev_state: torch.Tensor,
+                        next_state_state: torch.Tensor, lambda_=10.):
         """
         Computes values of the discriminator at different points
         and constraints the difference to be 0.1
@@ -440,7 +443,7 @@ class GAIL:
             plt.colorbar()
             plt.title(f'Rewards at Iteration {it}')
             plt.tight_layout()
-            plt.savefig(f'{dname}/r_{it//10}.png', dpi=300)
+            plt.savefig(f'{dname}/r_{it // 10}.png', dpi=300)
             plt.cla()
             plt.clf()
         entropy_kl = self.policy.entropy(states.reshape([-1, self.env.dims]))
@@ -494,5 +497,4 @@ if __name__ == '__main__':
             # gather more data if you want to see exactly what the agent's policy is
             # gail.gather_data()
             print(i + 1)
-            gail.plot_dist(num_samples=500, it=(i+1), dname=args.dir)
-
+            gail.plot_dist(num_samples=500, it=(i + 1), dname=args.dir)
