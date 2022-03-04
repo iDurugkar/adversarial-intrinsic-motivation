@@ -23,6 +23,19 @@ pip install -r requirements.txt
 
 ## Examples
 
+Some examples of how to run the experiments.
+
+### Grid World Experiments
+
+The code for all the grid world experiments should be the easiest to follow and run.
+This code is all in the directory `grid_world_experiments`.
+An example of a run here is:
+```
+python main.py --reward aim --dir aim_results
+```
+
+### Fetch Robot Experiments
+
 A single run on the `FetchReach-v1` domain can be executed by running the following command:
 ```
 python -u train.py --algo her --env FetchReach-v1 --tensorboard-log $PathToTensorboardLogs --eval-episodes 100 --eval-freq 2000 -f $PathToResultsFile --seed $SEED
