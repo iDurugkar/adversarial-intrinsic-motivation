@@ -17,7 +17,7 @@ from stable_baselines.common.policies import register_policy
 # from stable_baselines.sac.policies import FeedForwardPolicy as SACPolicy
 from stable_baselines.bench import Monitor
 from stable_baselines import logger
-from stable_baselines import HER, TD3, AIMSAC, AIMTD3, DDLTD3, GAILTD3
+from stable_baselines import HER, TD3, AIMTD3, DDLTD3, GAILTD3
 # DDPG and TRPO require MPI to be installed
 # if mpi4py is None:
 #     DDPG, TRPO = None, None
@@ -37,7 +37,7 @@ ALGOS = {
     # 'ddpg': DDPG,
     'her': HER,
     # 'sac': SAC,
-    'aimsac': AIMSAC,
+    # 'aimsac': AIMSAC,
     'aimtd3': AIMTD3,
     # 'ppo2': PPO2,
     # 'trpo': TRPO,

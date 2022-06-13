@@ -4,7 +4,7 @@ from optuna.pruners import SuccessiveHalvingPruner, MedianPruner
 from optuna.samplers import RandomSampler, TPESampler
 from optuna.integration.skopt import SkoptSampler
 from stable_baselines.her import HERGoalEnvWrapper
-from stable_baselines import SAC, TD3, AIMSAC, AIMTD3
+from stable_baselines import TD3, AIMTD3
 from stable_baselines.common.noise import AdaptiveParamNoiseSpec, NormalActionNoise, OrnsteinUhlenbeckActionNoise
 from stable_baselines.common.vec_env import VecNormalize, VecEnv
 
@@ -390,11 +390,7 @@ def sample_her_params(trial):
     :return: (dict)
     """
     print("Model class: ", trial.model_class)
-    if trial.model_class == SAC:
-        hyperparams = sample_sac_params(trial)
-    elif trial.model_class == AIMSAC:
-        hyperparams = sample_sac_params(trial)
-    elif trial.model_class == DDPG:
+    if trial.model_class == DDPG:
         hyperparams = sample_ddpg_params(trial)
     elif trial.model_class == TD3:
         hyperparams = sample_td3_params(trial)

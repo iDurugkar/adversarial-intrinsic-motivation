@@ -1,73 +1,36 @@
-# TD3 hyperparams
-FetchReach-v1:
-  n_timesteps: !!float 30000
-  policy: 'MlpPolicy'
-  model_class: 'td3'
-  n_sampled_goal: 4
-  goal_selection_strategy: 'future'
-  use_smirl: True
-  use_ddl: False
-  buffer_size: 1000000
-  batch_size: 256
-  gamma: 0.95
-  random_exploration: 0.3
-  target_policy_noise: 0.2
-  learning_rate: !!float 1e-3
-  noise_type: 'normal'
-  noise_std: 0.2
-  policy_kwargs: "dict(layers=[256, 256, 256])"
-  learning_starts: 1000
-  train_freq: 10
-  gradient_steps: 10
-  dense: False
-  rnd: False
-  # learning_rate: 0.001
-  # learning_starts: 1000
-  # train_freq: 10
-  # gradient_steps: 10
-  # policy_delay: 5
-  tau: 0.05 # (1 - gamma) / nb_train_steps
-
-# TD3
-FetchPickAndPlace-v1:
-  env_wrapper: utils.wrappers.DoneOnSuccessWrapper
-  n_timesteps: !!float 3e6
-  policy: 'MlpPolicy'
-  model_class: 'td3'
-  n_sampled_goal: 4
-  goal_selection_strategy: 'future'
-  buffer_size: 1000000
-  batch_size: 256
-  gamma: 0.98
-  use_ddl: False
-  use_smirl: True
-  random_exploration: 0.3
-  target_policy_noise: 0.2
-  learning_rate: !!float 1e-3
-  noise_type: 'normal'
-  noise_std: 0.2
-  policy_kwargs: "dict(layers=[256, 256, 256])"
-  learning_starts: 1000
-  train_freq: 10
-  gradient_steps: 10
-  # policy_delay: 5
-  dense: False
-  rnd: False
-  tau: 0.05 # (1 - gamma) / nb_train_steps
-
-#  TD3
+#  AIM+TD3 hyperparameters
 FetchPush-v1:
   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
   n_timesteps: !!float 3e6
   policy: 'MlpPolicy'
-  model_class: 'td3'
+  model_class: 'aimtd3'
+  n_sampled_goal: 4
+  goal_selection_strategy: 'future'
+  buffer_size: 1000000
+  batch_size: 512
+  gamma: 0.95
+  random_exploration: 0.3
+  learning_rate: !!float 1e-3
+  noise_type: 'normal'
+  noise_std: 0.2
+  policy_kwargs: "dict(layers=[256, 256, 256])"
+  learning_starts: 1000
+  train_freq: 20
+  gradient_steps: 20
+  policy_delay: 4
+  tau: 0.05 # (1 - gamma) / nb_train_steps
+###########
+
+#  AIM+TD3 hyperparameters
+FetchReach-v1:
+  n_timesteps: !!float 30000
+  policy: 'MlpPolicy'
+  model_class: 'aimtd3'
   n_sampled_goal: 4
   goal_selection_strategy: 'future'
   buffer_size: 1000000
   batch_size: 256
   gamma: 0.98
-  use_ddl: False
-  use_smirl: True
   random_exploration: 0.3
   target_policy_noise: 0.2
   learning_rate: !!float 1e-3
@@ -77,37 +40,177 @@ FetchPush-v1:
   learning_starts: 1000
   train_freq: 10
   gradient_steps: 10
-  # policy_delay: 5
-  dense: False
-  rnd: False
-  tau: 0.05 # (1 - gamma) / nb_train_steps
+  policy_delay: 2
+  disc_train_freq: 100
+  disc_steps: 5
+  tau: 0.1 # (1 - gamma) / nb_train_steps
+  reward: 'fairl'  # uncomment this line to use FAIRL
 
-#  TD3
+##############
+
+#  AIM+TD3 hyperparameters
 FetchSlide-v1:
   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
   n_timesteps: !!float 3e6
   policy: 'MlpPolicy'
-  model_class: 'td3'
+  model_class: 'aimtd3'
   n_sampled_goal: 4
   goal_selection_strategy: 'future'
   buffer_size: 1000000
-  batch_size: 256
-  gamma: 0.99
-  use_ddl: False
-  use_smirl: True
+  batch_size: 512
+  gamma: 0.95
   random_exploration: 0.3
-  target_policy_noise: 0.2
   learning_rate: !!float 1e-3
   noise_type: 'normal'
   noise_std: 0.2
   policy_kwargs: "dict(layers=[256, 256, 256])"
   learning_starts: 1000
-  train_freq: 10
-  gradient_steps: 10
-  # policy_delay: 5
-  # dense: False
-  # rnd: True
+  train_freq: 20
+  gradient_steps: 20
+  policy_delay: 4
   tau: 0.05 # (1 - gamma) / nb_train_steps
+###########
+
+#  AIM+TD3 hyperparameters
+FetchPickAndPlace-v1:
+  env_wrapper: utils.wrappers.DoneOnSuccessWrapper
+  n_timesteps: !!float 3e6
+  policy: 'MlpPolicy'
+  model_class: 'aimtd3'
+  n_sampled_goal: 4
+  goal_selection_strategy: 'future'
+  buffer_size: 1000000
+  batch_size: 512
+  gamma: 0.95
+  random_exploration: 0.3
+  learning_rate: !!float 1e-3
+  noise_type: 'normal'
+  noise_std: 0.2
+  policy_kwargs: "dict(layers=[256, 256, 256])"
+  learning_starts: 1000
+  train_freq: 20
+  gradient_steps: 20
+  policy_delay: 4
+  tau: 0.05 # (1 - gamma) / nb_train_steps
+###########
+
+#########################################
+#########################################
+
+# # TD3 hyperparams
+# FetchReach-v1:
+#   n_timesteps: !!float 30000
+#   policy: 'MlpPolicy'
+#   model_class: 'td3'
+#   n_sampled_goal: 4
+#   goal_selection_strategy: 'future'
+#   use_smirl: True
+#   use_ddl: False
+#   buffer_size: 1000000
+#   batch_size: 256
+#   gamma: 0.95
+#   random_exploration: 0.3
+#   target_policy_noise: 0.2
+#   learning_rate: !!float 1e-3
+#   noise_type: 'normal'
+#   noise_std: 0.2
+#   policy_kwargs: "dict(layers=[256, 256, 256])"
+#   learning_starts: 1000
+#   train_freq: 10
+#   gradient_steps: 10
+#   dense: False
+#   rnd: False
+#   # learning_rate: 0.001
+#   # learning_starts: 1000
+#   # train_freq: 10
+#   # gradient_steps: 10
+#   # policy_delay: 5
+#   tau: 0.05 # (1 - gamma) / nb_train_steps
+##############
+
+# # TD3
+# FetchPickAndPlace-v1:
+#   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
+#   n_timesteps: !!float 3e6
+#   policy: 'MlpPolicy'
+#   model_class: 'td3'
+#   n_sampled_goal: 4
+#   goal_selection_strategy: 'future'
+#   buffer_size: 1000000
+#   batch_size: 256
+#   gamma: 0.98
+#   use_ddl: False
+#   use_smirl: True
+#   random_exploration: 0.3
+#   target_policy_noise: 0.2
+#   learning_rate: !!float 1e-3
+#   noise_type: 'normal'
+#   noise_std: 0.2
+#   policy_kwargs: "dict(layers=[256, 256, 256])"
+#   learning_starts: 1000
+#   train_freq: 10
+#   gradient_steps: 10
+#   # policy_delay: 5
+#   dense: False
+#   rnd: False
+#   tau: 0.05 # (1 - gamma) / nb_train_steps
+##############
+
+# #  TD3
+# FetchPush-v1:
+#   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
+#   n_timesteps: !!float 3e6
+#   policy: 'MlpPolicy'
+#   model_class: 'td3'
+#   n_sampled_goal: 4
+#   goal_selection_strategy: 'future'
+#   buffer_size: 1000000
+#   batch_size: 256
+#   gamma: 0.98
+#   use_ddl: False
+#   use_smirl: True
+#   random_exploration: 0.3
+#   target_policy_noise: 0.2
+#   learning_rate: !!float 1e-3
+#   noise_type: 'normal'
+#   noise_std: 0.2
+#   policy_kwargs: "dict(layers=[256, 256, 256])"
+#   learning_starts: 1000
+#   train_freq: 10
+#   gradient_steps: 10
+#   # policy_delay: 5
+#   dense: False
+#   rnd: False
+#   tau: 0.05 # (1 - gamma) / nb_train_steps
+
+##############
+
+# #  TD3
+# FetchSlide-v1:
+#   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
+#   n_timesteps: !!float 3e6
+#   policy: 'MlpPolicy'
+#   model_class: 'td3'
+#   n_sampled_goal: 4
+#   goal_selection_strategy: 'future'
+#   buffer_size: 1000000
+#   batch_size: 256
+#   gamma: 0.99
+#   use_ddl: False
+#   use_smirl: True
+#   random_exploration: 0.3
+#   target_policy_noise: 0.2
+#   learning_rate: !!float 1e-3
+#   noise_type: 'normal'
+#   noise_std: 0.2
+#   policy_kwargs: "dict(layers=[256, 256, 256])"
+#   learning_starts: 1000
+#   train_freq: 10
+#   gradient_steps: 10
+#   # policy_delay: 5
+#   # dense: False
+#   # rnd: True
+#   tau: 0.05 # (1 - gamma) / nb_train_steps
 
 #########################################
 
@@ -164,42 +267,9 @@ FetchSlide-v1:
 #   reward: 'gail'
 
 
-#   gamma: 0.9
-#   random_exploration: 0.1
-#   target_policy_noise: 0.2
-#   learning_rate: !!float 1e-3
-#   noise_type: 'normal'
-#   noise_std: 0.2
-#   policy_kwargs: "dict(layers=[256, 256, 256])"
-#   learning_starts: 1000
-#   train_freq: 100
-#   gradient_steps: 500
-#   policy_delay: 2
-#   tau: 0.1 # (1 - gamma) / nb_train_steps
-#   disc_train_freq: 300
-#   disc_steps: 10
-#   policy: 'MlpPolicy'
-#   model_class: 'aimtd3'
-#   n_sampled_goal: 4
-#   goal_selection_strategy: 'future'
-#   buffer_size: 1000000
-#   batch_size: 256
-#   gamma: 0.95
-#   random_exploration: 0.3
-#   learning_rate: !!float 1e-3
-#   noise_type: 'normal'
-#   noise_std: 0.2
-#   policy_kwargs: "dict(layers=[256, 256, 256])"
-#   learning_starts: 1000
-#   train_freq: 10
-#   gradient_steps: 50
-#   tau: 0.05 # (1 - gamma) / nb_train_steps
-#   # normalize_observations: true
-#
 
 
-# #  AIMTD3
-# FetchPush-v1:
+
 #   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
 #   n_timesteps: !!float 3e6
 #   policy: 'MlpPolicy'
@@ -259,52 +329,8 @@ FetchSlide-v1:
 #   train_freq: 10
 #   gradient_steps: 100
 #   tau: 0.05 # (1 - gamma) / nb_train_steps
-#   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
-#   n_timesteps: !!float 3e6
-#   policy: 'MlpPolicy'
-#   model_class: 'aimtd3'
-#   n_sampled_goal: 4
-#   goal_selection_strategy: 'future'
-#   buffer_size: 1000000
-#   batch_size: 512
-#   gamma: 0.95
-#   random_exploration: 0.3
-#   learning_rate: !!float 1e-3
-#   noise_type: 'normal'
-#   noise_std: 0.2
-#   policy_kwargs: "dict(layers=[256, 256, 256])"
-#   learning_starts: 1000
-#   train_freq: 20
-#   gradient_steps: 20
-#   policy_delay: 4
-#   tau: 0.05 # (1 - gamma) / nb_train_steps
-#   # normalize_observations: true
 
-
-  # #  TD3 
-  # FetchSlide-v1:
-  #   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
-  #   n_timesteps: !!float 3e6
-  #   policy: 'MlpPolicy'
-  #   model_class: 'td3'
-  #   n_sampled_goal: 4
-  #   goal_selection_strategy: 'future'
-  #   buffer_size: 1000000
-  #   batch_size: 256
-  #   gamma: 0.98
-  #   random_exploration: 0.3
-  #   target_policy_noise: 0.2
-  #   learning_rate: !!float 1e-3
-  #   noise_type: 'normal'
-  #   noise_std: 0.2
-  #   policy_kwargs: "dict(layers=[256, 256, 256])"
-  #   learning_starts: 1000
-  #   train_freq: 100
-  #   gradient_steps: 200
-  #   policy_delay: 5
-  #   dense: True
-  #   tau: 0.05 # (1 - gamma) / nb_train_steps
-  # #  AIMTD3 
+  # #  GAILTD3 
   # FetchSlide-v1:
   #   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
   #   n_timesteps: !!float 3e6
@@ -328,91 +354,7 @@ FetchSlide-v1:
   #   disc_train_freq: 100
   #   disc_steps: 10
   #   tau: 0.1 # (1 - gamma) / nb_train_steps
-  #   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
-  #   n_timesteps: !!float 3e6
-  #   policy: 'MlpPolicy'
-  #   model_class: 'aimtd3'
-  #   n_sampled_goal: 4
-  #   goal_selection_strategy: 'future'
-  #   buffer_size: 1000000
-  #   batch_size: 256
-  #   gamma: 0.95
-  #   random_exploration: 0.2
-  #   learning_rate: !!float 1e-3
-  #   noise_type: 'normal'
-  #   noise_std: 0.2
-  #   policy_kwargs: "dict(layers=[256, 256, 256])"
-  #   learning_starts: 1000
-  #   train_freq: 100
-  #   gradient_steps: 200
-  #   policy_delay: 2
-  #   tau: 0.1 # (1 - gamma) / nb_train_steps
-#   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
-#   n_timesteps: !!float 3e6
-#   policy: 'MlpPolicy'
-#   model_class: 'aimtd3'
-#   n_sampled_goal: 4
-#   goal_selection_strategy: 'future'
-#   buffer_size: 1000000
-#   batch_size: 256
-#   gamma: 0.95
-#   random_exploration: 0.2
-#   learning_rate: !!float 1e-3
-#   noise_type: 'normal'
-#   noise_std: 0.2
-#   policy_kwargs: "dict(layers=[256, 256, 256])"
-#   learning_starts: 1000
-#   train_freq: 10
-#   gradient_steps: 100
-#   policy_delay: 20
-#   tau: 0.05 # (1 - gamma) / nb_train_steps
-# normalize_observations: true
-#   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
-#   n_timesteps: !!float 3e6
-#   policy: 'MlpPolicy'
-#   model_class: 'td3'
-#   n_sampled_goal: 4
-#   goal_selection_strategy: 'future'
-#   buffer_size: 1000000
-#   batch_size: 256
-#   gamma: 0.95
-#   random_exploration: 0.3
-#   learning_rate: !!float 1e-3
-#   noise_type: 'normal'
-#   noise_std: 0.2
-#   policy_kwargs: "dict(layers=[256, 256, 256])"
-#   learning_starts: 1000
-#   train_freq: 10
-#   gradient_steps: 10
-#   tau: 0.05 # (1 - gamma) / nb_train_steps
-#   # normalize_observations: true
 
-
-
-# #  TD3 
-# FetchPush-v1:
-#   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
-#   n_timesteps: !!float 3e6
-#   policy: 'MlpPolicy'
-#   model_class: 'td3'
-#   n_sampled_goal: 4
-#   goal_selection_strategy: 'future'
-#   buffer_size: 1000000
-#   batch_size: 256
-#   gamma: 0.98
-#   random_exploration: 0.3
-#   target_policy_noise: 0.2
-#   learning_rate: !!float 1e-3
-#   noise_type: 'normal'
-#   noise_std: 0.2
-#   policy_kwargs: "dict(layers=[256, 256, 256])"
-#   learning_starts: 1000
-#   train_freq: 100
-#   gradient_steps: 200
-#   policy_delay: 5
-#   dense: True
-#   tau: 0.05 # (1 - gamma) / nb_train_steps
-#  TD3 
 
   # # FAIRL TD3 
   # FetchPush-v1:
@@ -491,69 +433,4 @@ FetchSlide-v1:
   #   disc_steps: 5
   #   tau: 0.1 # (1 - gamma) / nb_train_steps
   #   reward: 'fairl'
-  # #  AIMTD3 
-  # FetchPickAndPlace-v1:
-  #   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
-  #   n_timesteps: !!float 3e6
-  #   policy: 'MlpPolicy'
-  #   model_class: 'gailtd3'
-  #   n_sampled_goal: 4
-  #   goal_selection_strategy: 'future'
-  #   buffer_size: 1000000
-  #   batch_size: 256
-  #   gamma: 0.9
-  #   random_exploration: 0.3
-  #   target_policy_noise: 0.2
-  #   learning_rate: !!float 1e-3
-  #   noise_type: 'normal'
-  #   noise_std: 0.2
-  #   policy_kwargs: "dict(layers=[256, 256, 256])"
-  #   learning_starts: 1000
-  #   train_freq: 100
-  #   gradient_steps: 200
-  #   policy_delay: 2
-  #   disc_train_freq: 100
-  #   disc_steps: 20
-  #   tau: 0.1 # (1 - gamma) / nb_train_steps
-  # env_wrapper: utils.wrappers.DoneOnSuccessWrapper
-  # n_timesteps: !!float 3e6
-  # policy: 'MlpPolicy'
-  # model_class: 'aimtd3'
-  # n_sampled_goal: 4
-  # goal_selection_strategy: 'future'
-  # buffer_size: 1000000
-  # batch_size: 256
-  # gamma: 0.9
-  # random_exploration: 0.35
-  # learning_rate: !!float 1e-3
-  # noise_type: 'normal'
-  # noise_std: 0.2
-  # policy_kwargs: "dict(layers=[256, 256, 256])"
-  # learning_starts: 1000
-  # train_freq: 100
-  # gradient_steps: 200
-  # policy_delay: 2
-  # tau: 0.1 # (1 - gamma) / nb_train_steps
-#   env_wrapper: utils.wrappers.DoneOnSuccessWrapper
-#   n_timesteps: !!float 2e6
-#   policy: 'MlpPolicy'
-#   model_class: 'td3'
-#   n_sampled_goal: 4
-#   goal_selection_strategy: 'future'
-#   buffer_size: 1000000
-#   batch_size: 256
-#   gamma: 0.98
-#   random_exploration: 0.3
-#   learning_rate: !!float 1e-3
-#   noise_type: 'normal'
-#   noise_std: 0.2
-#   policy_kwargs: "dict(layers=[256, 256, 256])"
-#   learning_starts: 1000
-#   train_freq: 10
-#   gradient_steps: 10
-#   tau: 0.05 # (1 - gamma) / nb_train_steps
-#   # normalize_observations: true
-
-
-
 
