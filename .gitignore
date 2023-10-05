@@ -14,3 +14,4 @@ trained_agents/
 .DS_Store
 wandb/
 launch.json
+results

@@ -17,6 +17,7 @@ import argparse
 import os
 import wandb
 from os import path
+import pandas as pd
 
 
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -541,3 +542,9 @@ if __name__ == "__main__":
         # extract rewards from the gathered data
         returns = gail.env._returns_buffer
         wandb.log({"returns": returns[-1], "iteration": i + 1})
+        if i == args.num_epochs - 1:
+            logdir = f"results/{args.reward}/{args.seed}.csv"
+            if not path.exists(f"results/{args.reward}"):
+                os.makedirs(f"results/{args.reward}")
+            df = pd.DataFrame({"returns": returns, "t": np.arange(len(returns))})
+            df.to_csv(logdir, index=False)

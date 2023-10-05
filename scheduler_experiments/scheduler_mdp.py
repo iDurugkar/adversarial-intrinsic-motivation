@@ -20,10 +20,11 @@ class SchedulerMDP:
         scale: float = 0.1,
         budget: int = 5,
         horizon=100,
+        ma_rate: float = 0.9,  # moving average rate
     ):
         super().__init__()
         self.d = d
-        self.dims = d + 1  # considering the remaining actions
+        self.dims = 2 * d + 1  # considering the remaining actions
         self.scale = scale
         self.phi = phi
         self.budget = budget
@@ -31,6 +32,7 @@ class SchedulerMDP:
         self.action_space = [0, 1]
         self.min_state = -1
         self.max_state = 1
+        self.ma_rate = ma_rate
         self.reset()
         self._returns_buffer = []
 
@@ -54,7 +56,11 @@ class SchedulerMDP:
 
     def state(self):
         frac_remaining = self._remaining_actions / self.budget
-        return np.array([*np.tanh(self._states[self._t]), frac_remaining])
+        ma_weights = np.array([self.ma_rate ** i for i in reversed(range(self._t + 1))])
+        ma_weights = ma_weights / ma_weights.sum()
+        ma_states = np.tanh(np.sum(self._states[: self._t + 1] * ma_weights[:, None], 0))
+        cur_states = np.tanh(self._states[self._t])
+        return np.array([*cur_states, *ma_states, frac_remaining])
 
     def step(self, action: np.ndarray) -> tuple:
         # update state as AR process
@@ -81,9 +87,13 @@ class SchedulerMDP:
     def sample_target_state(self):
         # sample random t
         t = np.random.randint(self.horizon)
-        exo_states = np.tanh(self._states[t + 1])
-        frac_remaining = 1 - sum(self._action_indicator[:t]) / self.budget
-        return np.array([*exo_states, frac_remaining])
+        cur_states = np.tanh(self._states[t + 1])
+        # get ma_states
+        ma_weights = np.array([self.ma_rate ** i for i in reversed(range(t + 2))])
+        ma_weights = ma_weights / ma_weights.sum()
+        ma_states = np.tanh(np.sum(self._states[: t + 2] * ma_weights[:, None], 0))
+        frac_remaining = 1 - sum(self._action_indicator[:t + 1]) / self.budget
+        return np.array([*cur_states, *ma_states, frac_remaining])
 
 
 if __name__ == "__main__":
