@@ -12,3 +12,5 @@ trained_agents/
 .git/
 .pytype/
 .DS_Store
+wandb/
+launch.json
